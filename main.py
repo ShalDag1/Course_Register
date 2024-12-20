@@ -33,23 +33,22 @@ choose_sem_btn_eng_student = {   #dict repesents specific btn IDs According to s
 if __name__ == "__main__":
     try:
         # Load credentials
-        username = os.getenv("USERNAME")
-        password = os.getenv("PASSWORD")
+        username = "" # fill out your UserName 
+        password = "" # fill in your Password
         login_link = "https://stud.haifa.ac.il/irj"
         chrome_path = './chromedriver-win64/chromedriver.exe'
         wb = launch_browser(login_link,chrome_path)
         login(wb, username, password)
         iframes = ["contentAreaFrame", "isolatedWorkArea"]
-        courses = ["203.1820", "203.3770", "203.3730", "203.3140"]
+        courses = ["203.1820", "203.3770", "203.3730", "203.3140"] #choose course by ID
         navigate_to_register_form(wb)
         switch_iframes(wb, iframes)
-        nevigate_to_courses_list(wb, choose_sem_btn_eng_student["semA"])
+        nevigate_to_courses_list(wb, choose_sem_btn_eng_student["semA"]) #choose semester
         choose_to_course_by_id(wb, courses)
-        register_courses(wb,courses) #uncomment in register function to really register
-        # Keep the browser open after finishing
+        register_courses(wb,courses) 
         input("Process completed. Press Enter to close...")
 
     except Exception as e:
         print(f"An error occurred: {e}")
-        # Keep the browser open to inspect the error
+        # Keep the browser open to inspect 
         input("Press Enter to close the browser after reviewing the error.")

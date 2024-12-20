@@ -66,24 +66,18 @@ def get_available_places(wb):
     groups = []
 
     try:
-        # Locate the table body containing the rows for each group
         tbody = wb.find_element(By.ID, "aaaa.EventPackageSelectionView.packageTable-contentTBody")
 
-        # Loop through each row in the tbody
         rows = tbody.find_elements(By.TAG_NAME, "tr")
         for row in rows[1:]:
             try:
-                # Get the group name from the first <td> column
                 group_name_element = row.find_element(By.XPATH,
                                                       ".//td[2]//span[contains(@id, 'aaaa.EventPackageSelectionView.se_stext_0_editor')]")
                 group_name = group_name_element.text
 
-                # Get the available places from the second <td> column
                 places_left_element = row.find_element(By.XPATH,
                                                        ".//td[3]//span[contains(@id, 'aaaa.EventPackageSelectionView.se_freeCap_0_editor')]")
                 places_left = places_left_element.text
-
-                # Store the group information
                 groups.append({
                     "group_name": group_name,
                     "places_left": places_left
@@ -105,18 +99,14 @@ def click_max_places(wb, attempt):
     max_places_element = None
 
     try:
-        # Locate the table body containing the rows for each group
         tbody = wb.find_element(By.ID, "aaaa.EventPackageSelectionView.packageTable-contentTBody")
 
-        # Loop through each row in the tbody
         rows = tbody.find_elements(By.TAG_NAME, "tr")
         for row in rows[1:]:  # Start from the second row
             try:
-                # Locate the available places element in the row
                 places_left_element = row.find_element(By.XPATH,".//td[3]//span[contains(@id, 'aaaa.EventPackageSelectionView.se_freeCap_0_editor')]")
                 places_left = int(places_left_element.text)  # Convert text to integer
 
-                # Check if this row has the most places available
                 if places_left > max_places:
                     max_places = places_left
                     max_places_element = places_left_element
@@ -124,7 +114,7 @@ def click_max_places(wb, attempt):
             except Exception as e:
                 print(f"Error processing row: {e}")
 
-        # Click on the <span> with the most places available
+        # Click on the class with the most places available for required course
         if max_places > 0:
             if max_places_element:
                 max_places_element.click()
@@ -142,7 +132,6 @@ def click_max_places(wb, attempt):
                 print("Course is full, please try again later")
                 return 0
 
-
     except Exception as e:
         print(f"Error locating table body: {e}")
 
@@ -156,7 +145,7 @@ def register_courses(wb,courses):
         places_left = click_max_places(wb, 0)
         time.sleep(0.1)
         if (places_left > 0):
-            #wb.find_element(By.ID, "aaaa.EventPackageSelectionView.bookingButton").click()
+            wb.find_element(By.ID, "aaaa.EventPackageSelectionView.bookingButton").click()
             print(f"register to course: {course} succeed")
         value1 += 1
         value2 += 1
